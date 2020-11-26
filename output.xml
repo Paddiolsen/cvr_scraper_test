@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.2.2 (Python 3.7.5 on linux)" generated="20201110 08:56:39.821" rpa="true">
+<suite id="s1" name="Tasks" source="/home/patrick/Robots/cvr_demo_bot/tasks.robot">
+<test id="s1-t1" name="Get data from cvr">
+<kw name="Open Available Browser" library="RPA.Browser" type="setup">
+<doc>Opens the first available browser in the system in preferred order, or the
+given browser (``browser_selection``).</doc>
+<arguments>
+<arg>${CVR_URL}</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.349" endtime="20201110 08:56:40.349"></status>
+</kw>
+<kw name="Open Excel file and get cvr row">
+<kw name="Open Workbook" library="RPA.Excel.Files">
+<doc>Open an existing Excel workbook.</doc>
+<arguments>
+<arg>${test_data}</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.350" endtime="20201110 08:56:40.350"></status>
+</kw>
+<kw name="Read Worksheet As Table" library="RPA.Excel.Files">
+<doc>Read the content of a worksheet into a Table container. Allows
+sorting/filtering/manipulating using the `RPA.Tables` library.</doc>
+<arguments>
+<arg>header=True</arg>
+</arguments>
+<assign>
+<var>${worksheet}</var>
+</assign>
+<status status="NOT_RUN" starttime="20201110 08:56:40.351" endtime="20201110 08:56:40.351"></status>
+</kw>
+<kw name="${row} IN [ @{worksheet} ]" type="for">
+<kw name="${row} = ${row}" type="foritem">
+<kw name="Go To" library="RPA.Browser">
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<arguments>
+<arg>${CVR_LONG_URL}${row}[cvr]</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.351" endtime="20201110 08:56:40.351"></status>
+</kw>
+<kw name="Is Location" library="RPA.Browser">
+<doc>Is current URL expected url</doc>
+<arguments>
+<arg>${CVR_ERROR_PAGE}</arg>
+</arguments>
+<assign>
+<var>${error_page}</var>
+</assign>
+<status status="NOT_RUN" starttime="20201110 08:56:40.351" endtime="20201110 08:56:40.352"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${error_page}== ${FALSE}</arg>
+<arg>Extract data and update excel</arg>
+<arg>${row}</arg>
+</arguments>
+<kw name="Extract data and update excel">
+<arguments>
+<arg>${row}</arg>
+</arguments>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser">
+<doc>Waits until the element ``locator`` is visible.</doc>
+<arguments>
+<arg>css:DIV.row.dataraekker:nth-child(2) &gt; DIV.col-sm-6:nth-child(2)</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.352" endtime="20201110 08:56:40.353"></status>
+</kw>
+<kw name="Get Text" library="RPA.Browser">
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<arguments>
+<arg>css:DIV.row.dataraekker:nth-child(2) &gt; DIV.col-sm-6:nth-child(2)</arg>
+</arguments>
+<assign>
+<var>${address}</var>
+</assign>
+<status status="NOT_RUN" starttime="20201110 08:56:40.353" endtime="20201110 08:56:40.353"></status>
+</kw>
+<kw name="Get Text" library="RPA.Browser">
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<arguments>
+<arg>css:DIV.row.dataraekker:nth-child(3) &gt; DIV.col-sm-6:nth-child(2)</arg>
+</arguments>
+<assign>
+<var>${zipcode}</var>
+</assign>
+<status status="NOT_RUN" starttime="20201110 08:56:40.353" endtime="20201110 08:56:40.353"></status>
+</kw>
+<kw name="Get Text" library="RPA.Browser">
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<arguments>
+<arg>css:DIV.row.dataraekker:nth-child(5) &gt; DIV.col-sm-6:nth-child(2)</arg>
+</arguments>
+<assign>
+<var>${company_type}</var>
+</assign>
+<status status="NOT_RUN" starttime="20201110 08:56:40.353" endtime="20201110 08:56:40.353"></status>
+</kw>
+<kw name="Set Worksheet Value" library="RPA.Excel.Files">
+<doc>Set a cell value in the given worksheet.</doc>
+<arguments>
+<arg>row=${row}[ID]</arg>
+<arg>column=B</arg>
+<arg>value=${address}</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.354" endtime="20201110 08:56:40.354"></status>
+</kw>
+<kw name="Set Worksheet Value" library="RPA.Excel.Files">
+<doc>Set a cell value in the given worksheet.</doc>
+<arguments>
+<arg>row=${row}[ID]</arg>
+<arg>column=C</arg>
+<arg>value=${zipcode}</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.354" endtime="20201110 08:56:40.354"></status>
+</kw>
+<kw name="Set Worksheet Value" library="RPA.Excel.Files">
+<doc>Set a cell value in the given worksheet.</doc>
+<arguments>
+<arg>row=${row}[ID]</arg>
+<arg>column=D</arg>
+<arg>value=${company_type}</arg>
+</arguments>
+<status status="NOT_RUN" starttime="20201110 08:56:40.355" endtime="20201110 08:56:40.355"></status>
+</kw>
+<kw name="Save Workbook" library="RPA.Excel.Files">
+<doc>Save the active workbook.</doc>
+<status status="NOT_RUN" starttime="20201110 08:56:40.355" endtime="20201110 08:56:40.355"></status>
+</kw>
+<status status="PASS" starttime="20201110 08:56:40.352" endtime="20201110 08:56:40.355"></status>
+</kw>
+<status status="NOT_RUN" starttime="20201110 08:56:40.352" endtime="20201110 08:56:40.355"></status>
+</kw>
+<status status="PASS" starttime="20201110 08:56:40.351" endtime="20201110 08:56:40.355"></status>
+</kw>
+<status status="PASS" starttime="20201110 08:56:40.351" endtime="20201110 08:56:40.355"></status>
+</kw>
+<kw name="Close Workbook" library="RPA.Excel.Files">
+<doc>Close the active workbook.</doc>
+<status status="NOT_RUN" starttime="20201110 08:56:40.355" endtime="20201110 08:56:40.356"></status>
+</kw>
+<status status="PASS" starttime="20201110 08:56:40.350" endtime="20201110 08:56:40.356"></status>
+</kw>
+<status status="PASS" starttime="20201110 08:56:40.349" endtime="20201110 08:56:40.356" critical="yes"></status>
+</test>
+<doc>Denne bot skal illustrer en medarbejder som laver opslag i
+cvr registret for at fremskaffe data på en kunde.</doc>
+<status status="PASS" starttime="20201110 08:56:39.821" endtime="20201110 08:56:40.357"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0">Critical Tasks</stat>
+<stat pass="1" fail="0">All Tasks</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" id="s1" name="Tasks">Tasks</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
